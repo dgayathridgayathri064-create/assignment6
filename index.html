@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Register Page -->
+        <section id="registerPage" class="card">
+            <h1>Create Account</h1>
+            <p>Register to get started</p>
+
+            <form id="registerForm">
+                <input type="text" id="regName"
+                       placeholder="Full Name" required>
+
+                <input type="email" id="regEmail"
+                       placeholder="Email Address" required>
+
+                <input type="password" id="regPassword"
+                       placeholder="Password (minimum 6 characters)"
+                       minlength="6" required>
+
+                <input type="password" id="confirmPassword"
+                       placeholder="Confirm Password" required>
+
+                <button type="submit">Register</button>
+            </form>
+
+            <p id="registerMessage" class="message"></p>
+
+            <p>Already have an account?
+                <a href="#" id="showLogin">Login</a>
+            </p>
+        </section>
+
+        <!-- Login Page -->
+        <section id="loginPage" class="card hidden">
+            <h1>Welcome Back</h1>
+            <p>Login to your account</p>
+
+            <form id="loginForm">
+                <input type="email" id="loginEmail"
+                       placeholder="Email Address" required>
+
+                <input type="password" id="loginPassword"
+                       placeholder="Password" required>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p id="loginMessage" class="message"></p>
+
+            <p>Don't have an account?
+                <a href="#" id="showRegister">Register</a>
+            </p>
+        </section>
+
+        <!-- Dashboard -->
+        <section id="dashboardPage" class="card hidden">
+            <h1>Dashboard</h1>
+            <h2 id="welcomeMessage">Welcome!</h2>
+            <p>You have successfully logged in.</p>
+            <button id="logoutButton">Logout</button>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
