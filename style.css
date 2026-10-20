@@ -1,4 +1,3 @@
-
 /* Reset */
 * {
     margin: 0;
@@ -6,7 +5,7 @@
     box-sizing: border-box;
 }
 
-/* Premium black and gold background */
+/* Body */
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #090909, #252525, #5b4925);
@@ -17,13 +16,13 @@ body {
     padding: 20px;
 }
 
-/* Main container */
+/* Container */
 .container {
     width: 100%;
     max-width: 420px;
 }
 
-/* Form card */
+/* Card */
 .card {
     background: #fffdf5;
     padding: 35px;
@@ -34,29 +33,17 @@ body {
 }
 
 /* Headings */
-h1 {
+h1, h2 {
     color: #92712d;
-    margin-bottom: 12px;
-    font-size: 28px;
-}
-
-h2 {
-    color: #92712d;
-    margin: 20px 0;
-}
-
-/* Paragraphs */
-.card > p {
-    color: #77736a;
     margin-bottom: 20px;
-    line-height: 1.5;
 }
 
-/* Forms */
+/* Form */
 form {
     display: flex;
     flex-direction: column;
     gap: 14px;
+    margin-bottom: 20px;
 }
 
 /* Input fields */
@@ -66,24 +53,20 @@ input {
     border: 1px solid #d6c69a;
     border-radius: 8px;
     font-size: 15px;
-    background: #ffffff;
-    color: #252525;
-    outline: none;
-    transition: 0.3s;
 }
 
 input:focus {
-    border-color: #92712d;
-    box-shadow: 0 0 0 3px rgba(146, 113, 45, 0.15);
+    outline: 2px solid #92712d;
 }
 
 /* Buttons */
 button {
+    width: 100%;
     padding: 14px;
-    border: 1px solid #92712d;
+    border: none;
     border-radius: 8px;
     background: #92712d;
-    color: #ffffff;
+    color: white;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
@@ -92,7 +75,6 @@ button {
 
 button:hover {
     background: #252525;
-    border-color: #92712d;
     color: #f3dfaa;
     transform: translateY(-2px);
 }
@@ -100,33 +82,27 @@ button:hover {
 /* Links */
 a {
     color: #92712d;
-    text-decoration: none;
     font-weight: bold;
+    text-decoration: none;
 }
 
 a:hover {
-    color: #5b4925;
     text-decoration: underline;
 }
 
-/* Validation messages */
+/* Messages */
 .message {
-    font-size: 14px;
     margin-top: 15px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
 }
 
 /* Hide inactive pages */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
-/* Dashboard button */
-#dashboardPage button {
-    width: 100%;
-    margin-top: 10px;
-}
-
-/* Mobile responsive */
+/* Mobile view */
 @media (max-width: 480px) {
     .card {
         padding: 25px 20px;

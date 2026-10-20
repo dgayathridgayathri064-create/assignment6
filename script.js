@@ -1,139 +1,121 @@
 
-"use strict";
-
-// Reusable function to get an HTML element
-const getElement = (id) => document.getElementById(id);
-
-// Function to show a page
-const showPage = (pageId) => {
-    ["registerPage", "loginPage", "dashboardPage"].forEach((id) => {
-        getElement(id).classList.toggle("hidden", id !== pageId);
-    });
+// Reusable function with parameter and return value
+const getElement = (id) => {
+    return document.getElementById(id);
 };
 
-// Function with a parameter and return value
-const isValidPassword = (password) => password.length >= 6;
+// Get page elements
+const registerPage = getElement("registerPage");
+const loginPage = getElement("loginPage");
+const dashboardPage = getElement("dashboardPage");
 
-// Read registered user from browser storage
+// Reusable function to display a page
+const showPage = (page) => {
+    registerPage.classList.add("hidden");
+    loginPage.classList.add("hidden");
+    dashboardPage.classList.add("hidden");
+
+    page.classList.remove("hidden");
+};
+
+// Reusable password validation function
+const validatePassword = (password) => {
+    return password.length >= 6;
+};
+
+// Get saved user from browser storage
 const getUser = () => {
-    try {
-        return JSON.parse(localStorage.getItem("authUser")) || null;
-    } catch {
-        return null;
-    }
+    const data = localStorage.getItem("user");
+    return data ? JSON.parse(data) : null;
 };
 
-// Show the correct starting page
-if (sessionStorage.getItem("loggedIn") === "true" && getUser()) {
-    showDashboard();
-} else {
-    sessionStorage.removeItem("loggedIn");
-    showPage("registerPage");
-}
-
-// Switch between Register and Login
-getElement("showLogin").addEventListener("click", (event) => {
-    event.preventDefault();
-    getElement("loginMessage").textContent = "";
-    showPage("loginPage");
-});
-
-getElement("showRegister").addEventListener("click", (event) => {
-    event.preventDefault();
-    getElement("registerMessage").textContent = "";
-    showPage("registerPage");
-});
-
-// Register account
+// Register form validation
 getElement("registerForm").addEventListener("submit", (event) => {
     event.preventDefault();
 
     const name = getElement("regName").value.trim();
     const email = getElement("regEmail").value.trim().toLowerCase();
     const password = getElement("regPassword").value;
-    const confirmPassword = getElement("confirmPassword").value;
     const message = getElement("registerMessage");
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password) {
         message.textContent = "Please fill in all fields.";
-        message.style.color = "red";
         return;
     }
 
-    if (!isValidPassword(password)) {
-        message.textContent = "Password must have at least 6 characters.";
-        message.style.color = "red";
+    if (!validatePassword(password)) {
+        message.textContent =
+            "Password must contain at least 6 characters.";
         return;
     }
 
-    if (password !== confirmPassword) {
-        message.textContent = "Passwords do not match.";
-        message.style.color = "red";
-        return;
-    }
+    // Demo assignment only: never store plaintext passwords in production.
+    const user = {
+        name: name,
+        email: email,
+        password: password
+    };
 
-    if (getUser()) {
-        message.textContent = "An account already exists in this browser.";
-        message.style.color = "red";
-        return;
-    }
+    localStorage.setItem("user", JSON.stringify(user));
 
-    // Demo only: never store real passwords in browser storage
-    const user = { name, email, password };
-    localStorage.setItem("authUser", JSON.stringify(user));
-
-    message.style.color = "green";
-    message.textContent = "Account created! Please login.";
-
+    message.textContent = "Account created successfully!";
     getElement("registerForm").reset();
-    getElement("loginEmail").value = email;
-    showPage("loginPage");
+    getElement("loginMessage").textContent =
+        "Account created. Please login.";
+
+    showPage(loginPage);
 });
 
-// Login account
+// Open Login page
+getElement("showLogin").addEventListener("click", (event) => {
+    event.preventDefault();
+    showPage(loginPage);
+});
+
+// Open Register page
+getElement("showRegister").addEventListener("click", (event) => {
+    event.preventDefault();
+    showPage(registerPage);
+});
+
+// Login form validation
 getElement("loginForm").addEventListener("submit", (event) => {
     event.preventDefault();
 
     const email = getElement("loginEmail").value.trim().toLowerCase();
     const password = getElement("loginPassword").value;
-    const user = getUser();
     const message = getElement("loginMessage");
 
     if (!email || !password) {
         message.textContent = "Please enter email and password.";
-        message.style.color = "red";
         return;
     }
+
+    const user = getUser();
 
     if (!user || user.email !== email || user.password !== password) {
         message.textContent = "Invalid email or password.";
-        message.style.color = "red";
         return;
     }
 
+    // Store login status for this browser tab
     sessionStorage.setItem("loggedIn", "true");
-    getElement("loginForm").reset();
-    showDashboard();
-});
-
-// Dashboard function
-function showDashboard() {
-    const user = getUser();
-
-    if (!user || sessionStorage.getItem("loggedIn") !== "true") {
-        showPage("loginPage");
-        return;
-    }
+    sessionStorage.setItem("userName", user.name);
 
     getElement("welcomeMessage").textContent =
-        `Welcome, ${user.name}!`;
+        "Welcome, " + user.name + "!";
 
-    showPage("dashboardPage");
-}
+    getElement("loginForm").reset();
+    message.textContent = "";
+
+    showPage(dashboardPage);
+});
 
 // Logout
 getElement("logoutButton").addEventListener("click", () => {
     sessionStorage.removeItem("loggedIn");
-    getElement("loginMessage").textContent = "";
-    showPage("loginPage");
+    sessionStorage.removeItem("userName");
+
+    getElement("loginMessage").textContent = "Please login again.";
+    showPage(loginPage);
 });
